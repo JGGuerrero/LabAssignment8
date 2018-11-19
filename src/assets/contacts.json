@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "firstName": "Josh",
+        "lastName": "Guerrero",
+        "email": "jgguerrero@mail.fresnostate.edu",
+        "phone": "(559) 349-1234",
+        "editing": false
+    },
+    {
+        "id": 2,
+        "firstName": "Lewis",
+        "lastName": "Hernandez",
+        "email": "Lhernandez@mail.fresnostate.edu",
+        "phone": "(559) 349-1234",
+        "editing": false
+    },
+    {
+        "id": 3,
+        "firstName": "Miguel",
+        "lastName": "Fuentes",
+        "email": "Mfuentes@mail.fresnostate.edu",
+        "phone": "(559) 349-1234",
+        "editing": false
+    }
+
+]
