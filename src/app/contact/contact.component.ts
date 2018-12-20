@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from './contact.model';
 import { Http } from '@angular/http';
+import { LocalStorageService } from '../localStorageService';
 
 @Component({
   selector: 'contact',
@@ -11,7 +12,8 @@ export class ContactComponent implements OnInit {
 
 
   contacts: Array<Contact> = [];
-  contactParams: string = '';
+  contactParams = '';
+  localStorageService: LocalStorageService<Contact>;
   constructor(private http: Http) { }
 
   async ngOnInit() {
