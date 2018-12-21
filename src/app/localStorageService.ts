@@ -7,19 +7,29 @@ export class LocalStorageService<T> {
 
     }
 
-    saveItemsToLocalStorage(contacts: Array<T>) {
-        const savedContacts = localStorage.setItem(this.key, JSON.stringify(contacts));
-        return savedContacts;
-      }
+    saveItemsToLocalStorage(items: Array<T> | T) {
+        const savedItems = localStorage.setItem(this.key, JSON.stringify(items));
+        return savedItems;
+    }
     
-      getItemsFromLocalStorage(key: string) {
-        const savedContacts = JSON.parse(localStorage.getItem(key));
-        return savedContacts;
-      }
+      getItemsFromLocalStorage(key?: string) {
+        let savedItems;
+        if(key != null) {
+            const savedItems = JSON.parse(localStorage.getItem(key));
+        } else {
+            const savedItems = JSON.parse(localStorage.getItem(this.key));
+        }
+        return savedItems;
+    }
 
-      clearItemFromLocalStorage() {
-          localStorage.clear();
-      }
+    clearItemFromLocalStorage(key?: string) {
+        if(key != null) {
+            const items = null;
+            localStorage.setItem(key, JSON.stringify(items));
+        } else {
+            localStorage.clear();
+        }
+    }
 
 
 }

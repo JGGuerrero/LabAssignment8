@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Contact } from './contact.model';
 import { Http } from '@angular/http';
 import { LocalStorageService } from '../localStorageService';
+import { ActivatedRoute } from '@angular/router';
+import { IUser } from '../login/login.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'contact',
@@ -14,10 +17,25 @@ export class ContactComponent implements OnInit {
   contacts: Array<Contact> = [];
   contactParams = '';
   localStorageService: LocalStorageService<Contact>;
-  constructor(private http: Http) { }
+  currentUser: IUser;
+  constructor(
+    private http: Http, 
+    private activatedRoute: ActivatedRoute, 
+    private router: Router
+    ) {
+    this.localStorageService = new LocalStorageService('contacts');
+  }
 
   async ngOnInit() {
+    const currentUser = this.localStorageService.getItemsFromLocalStorage('user');
+    if (currentUser === null) {
+      this.router.navigate(['login']);
+    }
     this.loadContacts();
+    this.activatedRoute.params.subscribe((data: IUser) => {
+      console.log('data passed from login component to this component: ', data);
+      this.currentUser = data;
+    });
   }
 
   async loadContacts() {
@@ -53,13 +71,15 @@ export class ContactComponent implements OnInit {
 
   saveItemsToLocalStorage(contacts: Array<Contact>) {
     contacts = this.sortByID(contacts);
-    const savedContacts = localStorage.setItem('contacts', JSON.stringify(contacts));
-    return savedContacts;
+    return this.localStorageService.saveItemsToLocalStorage(contacts);
+    // const savedContacts = localStorage.setItem('contacts', JSON.stringify(contacts));
+    // return savedContacts;
   }
 
   getItemsFromLocalStorage(key: string) {
-    const savedContacts = JSON.parse(localStorage.getItem(key));
-    return savedContacts;
+    // const savedContacts = JSON.parse(localStorage.getItem(key));
+    return this.localStorageService.getItemsFromLocalStorage();
+    // return savedContacts;
   }
 
   searchContact(params: string) {
@@ -76,12 +96,19 @@ export class ContactComponent implements OnInit {
 
   }
 
-  sortByID (contacts: Array<Contact> ){
-    contacts.sort((prevContact:Contact, presContact: Contact)=> {
+  sortByID(contacts: Array<Contact>) {
+    contacts.sort((prevContact: Contact, presContact: Contact) => {
 
-        return prevContact.id > presContact.id ? 1 : -1;
-    }); 
+      return prevContact.id > presContact.id ? 1 : -1;
+    });
     return contacts;
+  }
+
+  logout(){
+    // clear local storage
+    this.localStorageService.clearItemFromLocalStorage('user');
+    //navigate to login page
+    this.router.navigate([''])
   }
 
 
